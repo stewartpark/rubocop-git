@@ -18,7 +18,9 @@ module RuboCop
       private
 
       def violations
-        @violations ||= style_checker.violations
+        @violations ||= style_checker.violations.reject do |violation|
+          violation.offenses.all?(&:disabled?)
+        end
       end
 
       def style_checker
